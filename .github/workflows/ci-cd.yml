@@ -40,8 +40,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          aws-region: ap-south-1
-          task-definition: ecs-task-def.json
+          task-definition: task-definition.json
           container-name: github-api-container
           image: ${{ steps.buiild-image.outputs.image }}
       
