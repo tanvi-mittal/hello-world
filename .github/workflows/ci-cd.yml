@@ -24,6 +24,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: build, tag and push to ECR
+        id: buiild-image
         env: 
           ECR_REGISTRY: 288761764400.dkr.ecr.ap-south-1.amazonaws.com
           ECR_REPO: test-ecr
@@ -33,11 +34,21 @@ jobs:
           IMAGE_URI=${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
           docker build --platform=linux/amd64 -t "${IMAGE_URI}" .
           docker push ${IMAGE_URI}
+          echo "image=${IMAGE_URI}" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses:
+        with:
+          aws-region: ap-south-1
+          task-definition: ecs-task-def.json
+          container-name: github-api-container
+          image: ${{ steps.buiild-image.outputs.image }}
       
       - name: Deploy to ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
-          task-definition: task-definition.json
+          task-definition: ${{ steps.task-def.outputs.task-definition}}
           service: github-api-service-qbp6j4p3
           cluster: devcluster
           wait-for-service-stability: true
