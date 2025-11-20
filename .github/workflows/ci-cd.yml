@@ -41,7 +41,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: github-api-container
+          container-name: dev-container
           image: ${{ steps.buiild-image.outputs.image }}
       
       - name: Deploy to ECS
