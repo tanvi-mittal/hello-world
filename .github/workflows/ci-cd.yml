@@ -38,7 +38,7 @@ jobs:
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
-        uses:
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           aws-region: ap-south-1
           task-definition: ecs-task-def.json
