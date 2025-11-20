@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 USERNAME_RE = re.compile(r"^[a-zA-Z\d](?:[a-zA-Z\d]|-(?=[a-zA-Z\d])){0,38}$")
 
-
 # Simplify the gist data to only include relevant fields
 def simplify(gists):
     return [
