@@ -33,5 +33,12 @@ jobs:
           IMAGE_URI=${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}
           docker build --platform=linux/amd64 -t "${IMAGE_URI}" .
           docker push ${IMAGE_URI}
-
+      
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: task-definition.json
+          service: github-api-service-qbp6j4p3
+          cluster: devcluster
+          wait-for-service-stability: true
 
